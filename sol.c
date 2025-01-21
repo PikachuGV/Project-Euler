@@ -1,10 +1,6 @@
 /*
-The sum of the squares of the first ten natural numbers is,
-1^2 + 2^2 + ... + 10^2 = 385.
-The square of the sum of the first ten natural numbers is,
-(1 + 2 + ... + 10)^2 = 55^2 = 3025.
-Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 - 385 = 2640.
-Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+By listing the first six prime numbers: 2, 3, 5, 7, 11 and 13, we can see that the 6th prime is 13.
+What is the 10001st prime number?
 */
 
 #include <stdlib.h>
@@ -12,17 +8,34 @@ Find the difference between the sum of the squares of the first one hundred natu
 #include <stdbool.h>
 #include <string.h>
 
-int main() {
-    int sumsq = 0, sqsum = 0;
-
-    for (int i = 1; i <= 100; i++) {
-        sumsq += i * i; sqsum += i;
+int* sieve(int n) {
+    bool primes[n + 1];
+    int c = n - 1;
+    memset(primes, true, sizeof(primes));
+    for (int i = 2; i * i <= n; i++) {
+        if (primes[i]) {
+            for (int j = i * i; j <= n; j += i) {
+                if (primes[j]) c--;
+                primes[j] = false;
+            }
+        }
     }
 
-    sqsum *= sqsum;
+    int* allprimes = (int*)malloc((c + 1) * sizeof(int)); allprimes[c] = -1;
 
-    int diff = sumsq > sqsum? sumsq - sqsum : sqsum - sumsq;
-    printf("%d\n", diff);
+    int index = 0;
+    for (int i = 2; i < n; i++) {
+        if (primes[i]) {
+            allprimes[index] = i; index++;
+        }
+    }
 
+    return allprimes;
+}
+
+int main() {
+    int n = 10001;
+    int* primes = sieve(n * 100);
+    printf("%d\n", primes[n - 1]);
     return 0;
 }
