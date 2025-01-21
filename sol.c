@@ -31,10 +31,10 @@ int ndigits(int n) {
 
 bool hasRepeat(bool **digits, int n, int ndig) {
     for (int i = 0; i < ndig; i++) {
-        if (*digits[(n%10)-1] == true) {
+        if ((*digits)[(n%10)-1] == true) {
             return true;
         }
-        *digits[(n%10)-1] = true; n/=10;
+        (*digits)[(n%10)-1] = true; n/=10;
     }
     return false;
 }
@@ -64,9 +64,13 @@ int main() {
     K = 0; for(int i=1;i<=k;i++)K=10*K+i;
 
     for (K; K < power(10, k); K++) {
-        if (hasRepeat(&digits,K,k)) continue;
 
-        for (M = 2; M < power(10, (S-k+1)/2); M++) {
+        for (M = 2; M < power(10, (S-k)/2); M++) {
+            memset(digits, false, S * sizeof(bool));
+            if (hasRepeat(&digits,K,k)) continue;
+            if (M==39 && K==7254) {
+                printf("");
+            }
             if (M % 10 == 1) continue;
             if (K % M != 0) continue;
 
@@ -79,6 +83,7 @@ int main() {
             if (all(digits, S) && !isIn(seen, c, K)) {
                 c++; seen = realloc(seen, c * sizeof(int));
                 seen[c-1] = K;
+                printf("%d, %d, %d\n", M, N, K);
             }
         }
     }
