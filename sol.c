@@ -4,7 +4,6 @@ What is the smallest positive number that is evenly divisible (divisible with no
 */
 
 /*
-
 Think about 2520.
 Obviously it is evenly divisible by 1.
 We can check that it is evenly divisible by 2, 3, 5, 7.
