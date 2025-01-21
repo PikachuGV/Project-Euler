@@ -13,19 +13,80 @@ HINT: Some products can be obtained in more than one way so be sure to only incl
 #include <stdbool.h>
 #include <string.h>
 
-int pow
+int power(int a, int b) {
+    int c = 1;
+    for (int i = 0; i < b; i++) {
+        c *= a;
+    }
+    return c;
+}
+
+int ndigits(int n) {
+    int i;
+    for (i = 0; n != 0 && i < INT_MAX; i++) {
+        n /= 10;
+    }
+    return i;
+}
+
+bool hasRepeat(bool **digits, int n, int ndig) {
+    for (int i = 0; i < ndig; i++) {
+        if (*digits[(n%10)-1] == true) {
+            return true;
+        }
+        *digits[(n%10)-1] = true; n/=10;
+    }
+    return false;
+}
+
+bool all(bool *arr, int len) {
+    for (int i = 0; i<len; i++) {
+        if (!arr[i]) return false;
+    }
+    return true;
+}
+
+bool isIn(int *arr, int len, int n) {
+    for (int i = 0; i<len; i++) {
+        if (arr[i] == n) return true;
+    }
+    return false;
+}
 
 int main() {
     int c, M, N, K, m, n, k, S, *seen; 
     bool *digits;
 
-    S = 9; k = S / 2;
+    c = 0; S = 9; k = S / 2;
     seen = malloc(0); 
     digits = malloc(S * sizeof(bool)); for(int i=0;i<S;i++)digits[i]=false;
 
     K = 0; for(int i=1;i<=k;i++)K=10*K+i;
-    for (k; k < )
 
+    for (K; K < power(10, k); K++) {
+        if (hasRepeat(&digits,K,k)) continue;
+
+        for (M = 2; M < power(10, (S-k+1)/2); M++) {
+            if (M % 10 == 1) continue;
+            if (K % M != 0) continue;
+
+            N = K / M; m = ndigits(M); n = ndigits(N);
+            if (m+n+k != S) continue;
+
+            if (hasRepeat(&digits,M,m)) continue;
+            if (hasRepeat(&digits,N,n)) continue;
+
+            if (all(digits, S) && !isIn(seen, c, K)) {
+                c++; seen = realloc(seen, c * sizeof(int));
+                seen[c-1] = K;
+            }
+        }
+    }
+    
+    int sum = 0;
+    for (int i = 0; i<c;i++) sum+= seen[i];
+
+    printf("%d\n", sum);
 
     return 0;
 }
