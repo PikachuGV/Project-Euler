@@ -39,14 +39,33 @@ int power(int a, int b) {
 }
 
 void genPalindromes(int D, int **arr) {
-    int i;
+    int i, n;
+
+    int *ref1, *ref2, *store, *currref;
+
+    ref1 = malloc(10 * sizeof(int)); //for odd digits
+    ref2 = malloc(10 * sizeof(int)); //for even digits
+    store = malloc(100 * sizeof(int)); //for current digit count
 
     for (i = 0; i < 10; i++) {
         (*arr)[i] = i;
+        ref1[i] = i;
     }
     for (i = 10; i < 20; i++) {
         (*arr)[i] = 11*(i-10);
+        ref2[i] = 11*(i-10);
     }
+
+    for (int d = 3; d <= D; d++) {
+        currref = d % 2 == 0 ? ref2 : ref1;
+        for (int j = 0; j < power(10, (d+1)/2); j++) {
+            n = currref[j];
+            for (int k = 0; k < 10; k++) {
+                (*arr)[i] = 10*n + 
+            }
+        }
+    }
+    
 }
 
 int main() {
