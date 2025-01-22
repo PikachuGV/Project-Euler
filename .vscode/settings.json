@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "Makefile": "makefile",
+        "stdbool.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c"
+    }
+}
