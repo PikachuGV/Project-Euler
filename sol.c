@@ -30,16 +30,34 @@ Since we know 101 is 3 bits, we will take the most significant 2 bits of the num
 #include <stdbool.h>
 #include <string.h>
 
-int genPalindromes(int D) {
-    int *arr, size;
-    size = D % 2 == 0 ? 20/9 * (10^(D/2) - 1)
-    arr = malloc();
+int power(int a, int b) {
+    int c = 1;
+    for (int i = 0; i < b; i++) {
+        c *= a;
+    }
+    return c;
+}
+
+void genPalindromes(int D, int **arr) {
+    int i;
+
+    for (i = 0; i < 10; i++) {
+        (*arr)[i] = i;
+    }
+    for (i = 10; i < 20; i++) {
+        (*arr)[i] = 11*(i-10);
+    }
 }
 
 int main() {
     int D = 6;
+    int *palindromes, size;
+    size = D % 2 == 0 ? 20/9 * (power(10,D/2) - 1) : 11/9 * (power(10, (D+1)/2)) - 20/9;
+    palindromes = malloc(size * sizeof(int));
 
+    genPalindromes(D, &palindromes);
 
+    for (int i = 0; i<size; i++) printf("%d\n", palindromes[i]);
 
     return 0;
 }
