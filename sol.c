@@ -20,15 +20,14 @@ Notice that there are 10 1-digit long palindromes, 10 2-digit long palindromes, 
 As such, we will produce every single palindrome possible, including the ones with leading 0s. To test whether a palindrome has leading 0s is simple: we just need to check whether its last digit is 0.
 
 Now lets look at the base 2 palindromes.
-Lets consider a 3 bit palindrome. For example,101.
-The neat part about binary is that there exists the xor function. If two inputs are equal, the xor function outputs 0. This could help with palindromes.
-Since we know 101 is 3 bits, we will take the most significant 2 bits of the number aka 10. (This can be done easily by doing 101>>(3/2)). Now we have to reverse the order of the bits such that the expected equal digits will line up. That can be done simply too, by doing 10 ^ 11 = 01. Now we get the least siginifacnt 2 bits of the number (Done by doing 101 && (1<<((3/2) +1) - 1)). Finally, we xor the 2 results and expect a result of 0 if the number is a palindromic number in base 2.
+We can reverse it quickly and check whether it is the same as the original.
 */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 
 int power(int a, int b) {
     int c = 1;
@@ -83,21 +82,47 @@ void genPalindromes(int D, int **arr) {
     
 }
 
+int nbits(int n) {
+    int i = 0;
+    while (n != 0) {
+        n >>= 1; i++;
+    }
+    return i;
+}
+
 bool isBinaryPalindrome(int n) {
-    int m, l;
-    m = n >> ()
+    int rev = 0, m = n;
+    while (m != 0) {
+        rev <<= 1;
+        rev |= m & 1;
+        m >>= 1;
+    }   
+    return (bool)(rev==n);
+
 }
 
 int main() {
+    clock_t start = clock();
     int D = 6;
-    int *palindromes, size;
+    int *palindromes, size, c;
     size = D % 2 == 0 ? 20 * (power(10,D/2) - 1) / 9 : (11 * (power(10, (D+1)/2)) - 20) / 9;
     palindromes = malloc(size * sizeof(int));
 
     genPalindromes(D, &palindromes);
 
-    
-    
+    c=0;
+
+    for (int i = 0; i < size; i++) {
+        if (palindromes[i] % 10 == 0) continue;
+        if (isBinaryPalindrome(palindromes[i])) {
+            c+=palindromes[i];
+        }
+    } 
+    printf("%d\n", c);
+
+    clock_t end = clock();
+    double time = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("%lf\n", time);
 
     return 0;
 }
