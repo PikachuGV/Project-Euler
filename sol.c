@@ -44,7 +44,6 @@ void genPalindromes(int D, int **arr) {
     int *ref1, *ref2, *store, *currref;
 
     ref1 = malloc(10 * sizeof(int)); //for odd digits
-    free(ref1);
     ref2 = malloc(10 * sizeof(int)); //for even digits
     store = malloc(100 * sizeof(int)); //for current digit count
 
@@ -58,11 +57,11 @@ void genPalindromes(int D, int **arr) {
     }
 
     for (int d = 3; d <= D; d++) {
-        store = malloc(power(10, (d+1)/2));
-        currref = d % 2 == 0 ? ref2 : ref1;
+        store = malloc(power(10, (d+1)/2) * sizeof(int));
         c=0;
-        for (int j = 0; j < power(10, (d+1)/2); j++) {
-            n = currref[j];
+        for (int j = 0; j < power(10, (d-1)/2); j++) {
+            n = (d % 2 == 0) ? ref2[j] : ref1[j];
+
             for (int k = 0; k < 10; k++) {
                 (*arr)[i] = k*power(10, d-1) + 10*n + k;
                 store[c] = (*arr)[i];
@@ -72,11 +71,11 @@ void genPalindromes(int D, int **arr) {
 
         if (d%2==0) {
             free(ref2); 
-            ref2 = malloc(power(10, (d+1)/2) * sizeof(int));
-            memcpy(ref2, store, sizeof(int) * power(10, (d+1)/2));
+            ref2 = malloc(power(10, d/2) * sizeof(int));
+            memcpy(ref2, store, sizeof(int) * power(10, d/2));
         } else {
             free(ref1); 
-            ref1 = malloc(power(10, (d+1)/2) * sizeof(int));
+            ref1 = malloc(power(10, d/2 + 1) * sizeof(int));
             memcpy(ref1, store, sizeof(int) * power(10, (d+1)/2));
         }
         free(store);
@@ -84,15 +83,21 @@ void genPalindromes(int D, int **arr) {
     
 }
 
+bool isBinaryPalindrome(int n) {
+    int m, l;
+    m = n >> ()
+}
+
 int main() {
     int D = 6;
     int *palindromes, size;
-    size = D % 2 == 0 ? 20/9 * (power(10,D/2) - 1) : 11/9 * (power(10, (D+1)/2)) - 20/9;
+    size = D % 2 == 0 ? 20 * (power(10,D/2) - 1) / 9 : (11 * (power(10, (D+1)/2)) - 20) / 9;
     palindromes = malloc(size * sizeof(int));
 
     genPalindromes(D, &palindromes);
 
-    for (int i = 0; i<size; i++) printf("%d\n", palindromes[i]);
+    
+    
 
     return 0;
 }
