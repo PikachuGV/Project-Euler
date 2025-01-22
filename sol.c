@@ -70,10 +70,12 @@ void genPalindromes(int D, int **arr) {
         }
 
         if (d%2==0) {
-            free(ref2); ref2 = malloc(power(10, (d+1)/2) * sizeof(int));
+            free(ref2); 
+            ref2 = malloc(power(10, (d+1)/2) * sizeof(int));
             memcpy(ref2, store, sizeof(int) * power(10, (d+1)/2));
         } else {
-            free(ref1); ref1 = malloc(power(10, (d+1)/2) * sizeof(int));
+            free(ref1); 
+            ref1 = malloc(power(10, (d+1)/2) * sizeof(int));
             memcpy(ref1, store, sizeof(int) * power(10, (d+1)/2));
         }
         free(store);
