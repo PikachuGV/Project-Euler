@@ -45,6 +45,14 @@ int sieve(int n, int **allprimes) {
     return c;
 }
 
+int power(int a, int b) {
+    int c = 1;
+    for (int i = 0; i < b; i++) {
+        c *= a;
+    }
+    return c;
+}
+
 int digits(int n) {
     int c = 1;
     while (n != 0) {
@@ -68,11 +76,11 @@ int main() {
             c++; continue;
         }
 
-        p = P; d = digits(P);
-        while ()
-        
+        p = P / power(10, d - 1); d = digits(P);
 
-
+        while (p != P) {
+            if ()
+        }
     }
 
     return 0;
