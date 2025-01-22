@@ -8,10 +8,6 @@ How many circular primes are there below one million?
 Obviously we need to get all primes below 1000000.
 We can ignore all primes that start with an even number since they will surely lead to a rotation that is even.
 We can also ignore all primes that start with 5 since they will lead to a rotation ending in 5, which makes it divisible by 5.
-
-Repetitions will be a concern. If we naively loop through all the primes and check whether there are circular, we are bound to have repetitions. As an example, we find that 197 is circular. That also means that we will find that 719 is circular.
-
-We can solve it by creating an array where each boolean element represents whether a prime is checked. This array will have length equal to the number of primes. As we check a prime, we also check whether we have checked this prime before. If we have, we do not bother checking it again and move on to the next prime.
 */
 
 
@@ -54,34 +50,62 @@ int power(int a, int b) {
 }
 
 int digits(int n) {
-    int c = 1;
+    int c = 0;
     while (n != 0) {
         n /= 10; c++;
     }
     return c;
 }
 
+int search(int* arr, int n, int len) {
+    if (len == 0) return -1;
+    if (len == 1 && arr[0] != n) return -1;
+    int mid = len / 2;
+
+    if (arr[mid] == n) return mid;
+    
+    if (arr[mid] > n) {
+        return search(arr, n, mid);
+    } else {
+        return search(&arr[mid + 1], n, len - mid - 1);
+    }
+}
+
 int main() {
-    int N, l, p, P, c, d, *primes;
+    int N, l, p, P, c, d, j, *primes;
     N = 1000000;
     l = sieve(N, &primes);
     c = 0;
 
-    bool seen[c];
-    memset(seen, false, sizeof(seen));
+    bool out;
 
     for (int i = 0; i < l; i++) {
+        out = false;
         P = primes[i];
         if (P / 10 == 0) {
             c++; continue;
         }
 
-        p = P / power(10, d - 1); d = digits(P);
+        d = digits(P);
+        p = 10 * P + (P / power(10, d - 1)) - ((P / power(10, d - 1)) * power(10, d)); 
 
-        while (p != P) {
-            if ()
+        if (P == 79) {
+            digits(1);
         }
+        while (p != P) {
+            if (search(primes, p, l) == -1) {
+                out = true; break;
+            }
+            p = 10 * p + (p / power(10, d - 1)) - ((p / power(10, d - 1)) * power(10, d));
+        }
+
+        if (out == false) {
+            c++;
+        }
+
     }
+
+    printf("%d\n", c);
 
     return 0;
 }
