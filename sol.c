@@ -44,6 +44,7 @@ void genPalindromes(int D, int **arr) {
     int *ref1, *ref2, *store, *currref;
 
     ref1 = malloc(10 * sizeof(int)); //for odd digits
+    free(ref1);
     ref2 = malloc(10 * sizeof(int)); //for even digits
     store = malloc(100 * sizeof(int)); //for current digit count
 
