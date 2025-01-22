@@ -39,7 +39,7 @@ int power(int a, int b) {
 }
 
 void genPalindromes(int D, int **arr) {
-    int i, n;
+    int i, n, c;
 
     int *ref1, *ref2, *store, *currref;
 
@@ -53,17 +53,30 @@ void genPalindromes(int D, int **arr) {
     }
     for (i = 10; i < 20; i++) {
         (*arr)[i] = 11*(i-10);
-        ref2[i] = 11*(i-10);
+        ref2[i-10] = 11*(i-10);
     }
 
     for (int d = 3; d <= D; d++) {
+        store = malloc(power(10, (d+1)/2));
         currref = d % 2 == 0 ? ref2 : ref1;
+        c=0;
         for (int j = 0; j < power(10, (d+1)/2); j++) {
             n = currref[j];
             for (int k = 0; k < 10; k++) {
-                (*arr)[i] = 10*n + 
+                (*arr)[i] = k*power(10, d-1) + 10*n + k;
+                store[c] = (*arr)[i];
+                i++;c++;
             }
         }
+
+        if (d%2==0) {
+            free(ref2); ref2 = malloc(power(10, (d+1)/2) * sizeof(int));
+            memcpy(ref2, store, sizeof(int) * power(10, (d+1)/2));
+        } else {
+            free(ref1); ref1 = malloc(power(10, (d+1)/2) * sizeof(int));
+            memcpy(ref1, store, sizeof(int) * power(10, (d+1)/2));
+        }
+        free(store);
     }
     
 }
