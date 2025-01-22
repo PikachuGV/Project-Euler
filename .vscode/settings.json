@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "Makefile": "makefile",
-        "algorithm": "c"
+        "algorithm": "c",
+        "string.h": "c"
     }
 }
