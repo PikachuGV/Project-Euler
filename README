@@ -1,0 +1,72 @@
+Mathmatical Analysis
+
+a,bcd,efg,hij, 0-9.
+2 | bcd
+3 | cde
+5 | def
+7 | efg
+11 | fgh
+13 | ghi
+17 | hij
+
+We know f=5.
+The only possible values of fgh are
+506, 517, 528, 539, 550 (rej), 561, 572, 583, 594.
+
+Now we list the multiples of 13.
+13, 26, 39, 52, 65, 78, 91, 104, 117.
+
+506 -> 06i -> i=5 rej
+517 -> 17i rej (since 17 = 4 mod 13 and theres no 2-digit multiple of 13 starting with 4)
+528 -> 28i -> i=6
+539 -> 39i -> i=0
+561 -> 61i -> i=1 rej
+572 -> 72i -> i=8
+583 -> 83i -> i=2
+594 -> 94i -> i=9 rej
+
+So the possible values are thus
+5286, 5390, 5728, 5832
+Now we list the multiples of 17
+17, 34, 51, 68, 85, 102, 119, 136, 153
+
+5286->86j->j=7
+5390->90j->j=1
+5728->28j->j=9
+5832->32j->j=3(rej)
+
+So there are only 3 possible last 5 digits:
+52867, 53901 and 57289.
+xxxxx52867:
+Remaining digits: 0, 1, 3, 4, 9
+We need e52 to be divisible by 7.
+Notice the only 2digit multiple of 7 that ends with 2 is 42.
+Thus we need e5 = 4 mod 7 -> e1 = 0 mod 7 -> e=2(rej) or e=9
+Remaining digits: 0, 1, 3, 4
+c+d+9=0 mod 3 -> c+d=0 mod 3
+Possible c,d are hence 0,3 and 3,0. Since d must be even for bcd to be divisible by 2, we only have 3,0
+
+
+xxxxx53901:
+Remaining digits: 2, 4, 6, 7, 8
+We need e53 to be divisible by 7.
+Notice the only 2digit multiple of 7 that ens with 3 is 63.
+So we need e5 = 6 mod 7 -> e6 = 0 mod 7 -> e=5 (rej)
+
+xxxxx57289:
+Remaining digits: 0, 1, 3, 4, 6
+We need e57 to be divisible by 7.
+Obviously we need e5 = 0 mod 7 -> e=3
+xxxx357289. 
+Remaining: 0, 1, 4, 6
+c+d+3 = 0 mod 3 -> c+d = 0 mod 3
+Biggest c+d is 10. All possible c+d are thus 3, 6, 9
+So we can only have 0+6 or 6+0
+
+So all possible numbers are hence:
+1430952867
+4130952867
+1406357289
+1460357289
+4106357289
+4160357289
