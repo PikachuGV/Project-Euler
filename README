@@ -1,0 +1,79 @@
+//Important and useful functions.
+
+
+Binary search:
+
+bool search(int* arr, int n, int len) {
+    if (len == 0) return false;
+    if (len == 1 && arr[0] != n) return false;
+    int mid = len / 2;
+
+    if (arr[mid] == n) return true;
+    
+    if (arr[mid] > n) {
+        return search(arr, n, mid);
+    } else {
+        return search(&arr[mid + 1], n, len - mid - 1);
+    }
+}
+
+Sieve with start and end bounds (inclusive):
+
+int sieve(int start, int end, int **allprimes) {
+    bool primes[end - start + 1];
+    int c = end - start + 1, s;
+    memset(primes, true, sizeof(primes));
+
+    //i represents the multiple that we are sieving out now. We only need to sieve until i = sqrt(end) since any number above sqrt(end) is either a prime or a multiple of some number below sqrt(end).
+    for (int i = 2; i * i <= end; i++) {
+        if (i > start && !primes[i - start]) continue;
+        if (i * i < start) {
+            //We set the start multiple to be start if start is already a multiple of i. Else we find the next multiple of i greater than start.
+            s = (start % i == 0) ? start : (start / i + 1) * i;
+        } else {
+            //If i * i >= start then we have to start from i * i directly. 
+            s = i * i;
+        }
+        //This loops through all multiples of i from start bound to end bound
+        for (int j = s; j <= end; j += i) {
+            if (primes[j - start]) c--;
+            primes[j - start] = false;
+        }
+    }
+
+    *allprimes = (int*)malloc(c * sizeof(int));
+
+    int index = 0;
+    for (int i = start; i < end; i++) {
+        if (primes[i - start]) {
+            (*allprimes)[index] = i; index++;
+        }
+    }
+
+    return c;
+}
+
+Check for perfect square:
+int isSquare(int n) {
+    int t = n >> 1;
+    while (t * t > n) t >>= 1;
+    for (t; t * t <= n; t++) if (t * t == n) return t;
+    return -1;
+}
+
+Power:
+//This works by spliting the exponent into powers of 2, as they are very much easier to calculate by repeated multiplication.
+int power(int a, int b) {
+    int i = 1, c = 1, A = a, bit = 2;
+    if (b & 1 != 0) {
+        c *= a;
+    }
+    while (bit <= b) {
+        A *= A;
+        if ((b & bit) != 0) {
+            c *= A;
+        }
+        bit <<= 1;
+    }
+    return c;
+}
