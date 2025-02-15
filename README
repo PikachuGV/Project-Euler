@@ -83,7 +83,9 @@ const int TENS[] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 10000000
 
 
 Test for same digit:
-bool sameDigits(int a, int b, int d) {
+bool sameDigits(int a, int b) {
+    int d = ndigits(a);
+    if (d != ndigits(b)) return false;
     int A[d], B[d];
     for (int i = d - 1; i >= 0; i--) {
         A[i] = a % 10; B[i] = b % 10;
