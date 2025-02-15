@@ -16,29 +16,45 @@ Find the sum of all 0 to 9 pandigital numbers with this property.
 #include <stdbool.h>
 #include <string.h>
 
-void swap (int *i, int *j) {
-    int temp = *i;
-    *i = *j;
-    *j = temp;
-}
-
-void permute(int index, int* arr, int n) {
-   if (index == n-1) {
-       for (int k = 1; k < n; ++k) {
-            
-       }
-       return;
-   }
-   for (int i = index; i < n; i++) {
-       swap (arr + index, arr + i);
-       permute (index+1, arr, n);
-       swap (arr + i, arr + index);
-   }
-   return;
+bool isPandigital(long long n) {
+    int b, d = 0;
+    while (n != 0) {
+        b = 1 << (n % 10);
+        if ((b & d) != 0) return false;
+        d |= b; n /= 10;
+    }
+    return (bool)(d == ((1 << 10) - 1));
 }
 
 int main() {
-    int arr[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    permute(0, arr, 10);
+    int val, arr[10];
+    int primes[] = {2, 3, 5, 7, 11, 13, 17};
+    bool out;
+    long long t, sum = 0L;
+    for (long long n = 1023456789LL; n <= 10000000000LL; n++) {
+        if (isPandigital(n)) {
+            t = n;
+            for (int i = 9; i >= 0; i--) {
+                arr[i] = t % 10; t /= 10;
+            }
+            
+
+            out = false;
+            for (int i = 1; i < 8; i++) {
+                val = (100 * arr[i]) + 10 * arr[i+1] + arr[i+2];
+                if ((val % primes[i - 1]) != 0) {
+                    out = true; break;
+                }
+            }
+
+            if (!out) {
+                printf("%lld\n", n);
+                sum += n;
+            }
+        }
+    }
+
+    printf("%lld\n", sum);
+
     return 0;
 }
