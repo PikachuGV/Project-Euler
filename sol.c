@@ -17,7 +17,19 @@ We can deduce some facts about x.
 
 const int TENS[] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
 
-bool sameDigits(int a, int b, int d) {
+int ndigits(int n) {
+    if (n < 0) n *= -1;
+    if (n == 0) return 1;
+    for (int i = 1; i < 10; i++) {
+        if (n < TENS[i]) return i;
+    }
+
+    exit(1000);
+}
+
+bool sameDigits(int a, int b) {
+    int d = ndigits(a);
+    if (d != ndigits(b)) return false;
     int A[d], B[d];
     for (int i = d - 1; i >= 0; i--) {
         A[i] = a % 10; B[i] = b % 10;
@@ -44,7 +56,25 @@ bool hasD(int n, int d) {
 }
 
 int main() {
-
+    bool out, done;
+    for (int d = 1; d < 10; d++) {
+        for (int n = TENS[d - 1]; n <= (TENS[d] / 6); n++) {
+            out = false; done = false;
+            if (((n % 2 == 0) && hasD(n, 0)) || ((n % 2 == 1) && hasD(n, 5))) {
+                for (int k = 2; k <= 6; k++) {
+                    if (!sameDigits(n, n * k)) {
+                        out = true; break;
+                    }
+                }
+                if (!out) {
+                    done = true;
+                    printf("%d\n", n);
+                    break;
+                }
+            }
+        }
+        if (done) break;
+    }
 
     return 0;
 }
