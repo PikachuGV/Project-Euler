@@ -130,7 +130,7 @@ int* replace(int n, int d) {
 
 int main() {
     int *primes, c, *P, d, p, C;
-    c = sieve(100000, 1000000, &primes);
+    c = sieve(2, 1000000, &primes);
     for (int i = 0; i < c; i++) {
         p = primes[i]; d = tsd(primes[i]); C = 0;
         if (d != -1) {
