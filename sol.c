@@ -49,15 +49,18 @@ void ncR(int R, int **arr) {
 }
 
 int main() {
-    int N = 1000000, *arr = malloc(100 * sizeof(int)), *c = malloc(100 * sizeof(int));
+    int N = 1000000, *arr = malloc(100 * sizeof(int)), *c = calloc(100, sizeof(int));
     bool done;
-    for (int i = 0; i < 100; i++) arr[i] = i+1;
-    for (int r = 2; r <= 100; r++) {
+    for (int i = 0; i < 100; i++) {
+        arr[i] = i+1;
+        if (i+1 > N) c[i] = 1;
+    }
+    for (int r = 2; r <= 50; r++) {
         done = true;
         ncR(r, &arr);
         for (int n = 0; n < 100; n++) {
-            if (arr[n] == 0) c[n] = -1;
-            if (arr[n] > 1000000) c[n] = r;
+            if (arr[n] == 0 && c[n] == 0) c[n] = -1;
+            if (arr[n] > N && c[n] == 0) c[n] = r;
             if (c[n] == 0) done = false;
         }
         if (done) break;
@@ -65,7 +68,8 @@ int main() {
     int sum = 0;
     for (int i = 0; i < 100; i++) {
         if (c[i] != -1) {
-            sum += i + 2 - 2 * c[i];
+            //n - 2R + 1 = i + 1 - 2R + 1 = i + 2 - 2R
+            sum += i + 2 - (2 * c[i]);
         }
     }
 
