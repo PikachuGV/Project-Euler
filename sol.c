@@ -22,18 +22,18 @@ NOTE: Wording was modified slightly on 24 April 2007 to emphasise the theoretica
 const int TENS[] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
 
 
-char *add(char **a, char **b) {
-    if (strlen(*a) != strlen(*b)) exit(10370);
-    int len = strlen(*a);
+char *add(char *a, char *b) {
+    if (strlen(a) != strlen(b)) exit(10370);
+    int len = strlen(a);
     int digit = 0, carry = 0;
     
     char *c = calloc((len + 2), sizeof(char));
     
     for (int i = len - 1; i >= 0; i--) {
-        digit = ((*a)[i] - '0') + ((*b)[i] - '0') + carry;
+        digit = ((a)[i] - '0') + ((b)[i] - '0') + carry;
         carry = digit / 10;
         if (carry > 9 || carry < 0) {
-        printf("%s, %s, %d", (*a), (*b), carry);
+        printf("%s, %s, %d", (a), (b), carry);
         exit(100);
         }
         c[i + 1] = (digit % 10) + '0';
@@ -92,10 +92,10 @@ int main() {
         
         for (j = 0; j < 50; j++) {
             rev = revstr(str);
-            temp = add(&str, &rev);
+            temp = add(str, rev);
             free(str); free(rev);
             
-            str = malloc(strlen(temp) * sizeof(char));
+            str = calloc(strlen(temp) + 1, sizeof(char));
             memcpy(str, temp, strlen(temp) * sizeof(char));
             
             if (d == strlen(temp)) {
