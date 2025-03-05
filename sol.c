@@ -109,7 +109,6 @@ int main() {
     int largest = 0, a, b, sum;
     A = calloc(3, sizeof(char));
 
-
     for (a = 99; a > 0; a--) {
         sprintf(A, "%d", a);
         getpows(&nums, A);
