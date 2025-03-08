@@ -31,7 +31,16 @@ with initial conditions a1 = 3, b1 = 2
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include <time.h>
+#include <sys/time.h>
+
+double get_time()
+{
+    struct timeval t;
+    struct timezone tzp;
+    gettimeofday(&t, &tzp);
+    return t.tv_sec + t.tv_usec*1e-6;
+}
+
 
 char *add(char *a, char *b) {
     if (strlen(a) > strlen(b)) {
@@ -68,7 +77,7 @@ char *add(char *a, char *b) {
 }
 
 int main() {
-    clock_t start = clock();
+    double start = get_time();
     char *a = calloc(2, sizeof(char)), *b = calloc(2, sizeof(char)), *A, *B;
     a[0] = '3'; b[0] = '2';
     int c = 0;
@@ -81,8 +90,8 @@ int main() {
 
         if (strlen(a) > strlen(b)) c++;
     }
-    clock_t end = clock();
-    double time = (double)(end - start) / CLOCKS_PER_SEC;
+    double end = get_time();
+    double time = (double)(end - start);
     printf("%d\nTime Taken: %lf\n", c, time);
     return 0;
 }
