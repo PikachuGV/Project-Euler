@@ -1,5 +1,5 @@
 /*
-Paste question here.
+Paste qn here.
 */
 
 #include <stdlib.h>
