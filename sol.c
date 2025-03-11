@@ -177,7 +177,9 @@ int main() {
                 done = true; break;
             };
 
-            if ((primes[i] != 3) && ((primes[i] % 3) != (primes[j] % 3))) continue;
+            //For some reason the mod 3 checks actually makes the code take longer to execute (by about 1s)
+
+           if ((primes[i] != 3) && ((primes[i] % 3) != (primes[j] % 3))) continue;
 
             if (isConcatPrimePair(primes[i], primes[j])) {
                 list[0] = primes[i]; list[1] = primes[j];
