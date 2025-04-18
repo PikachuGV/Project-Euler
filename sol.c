@@ -93,7 +93,6 @@ bool* genSquares(int start, int end) {
     bool *squares = calloc(end-start+1, sizeof(bool));
 
     int s = floorsqrt(start); if (s * s < start) s++;
-    printf("%d\n", s);
 
     for (int i = s; i * i <= end; i++) {
         squares[i * i - start] = true;
