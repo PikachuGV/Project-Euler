@@ -65,26 +65,55 @@ char *add(char *a, char *b) {
     return c;
 }
 
+char *mul(char *a, char *b) {
+    int lena = strlen(a), lenb = strlen(b);
+    int digit = 0, carry = 0, product = 0;
+
+    char *A = calloc(lena + lenb + 1, sizeof(char)), *B = calloc(lena + lenb + 1, sizeof(char)), *C;
+    memset(A, '0', (lena + lenb) * sizeof(char)); memset(B, '0', (lena + lenb) * sizeof(char));
+
+    for (int i = lenb - 1; i >= 0; i--) {
+        digit = (int)(b[i] - '0'); carry = 0;
+        for (int j = lena - 1; j >= 0; j--) {
+            product = (int)(a[j] - '0') * digit + carry;
+            B[i + j + 1] = (product % 10) + '0';
+            carry = (product / 10);
+        }
+        B[i] = carry + '0';
+        C = add(A, B);
+        free(A); A = calloc(strlen(C) + 1, sizeof(char)); memcpy(A, C, strlen(C) * sizeof(char));
+        free(B); B = calloc(lena + lenb + 1, sizeof(char)); memset(B, '0', (lena + lenb) * sizeof(char));
+        free(C);
+    }
+    if (A[0] == '0') {
+        char *new = calloc(lena + lenb, sizeof(char));
+        memcpy(new, A + 1, (lena + lenb) * sizeof(char));
+        free(A);
+        return new;
+    }
+    return A;
+}
+
 char** gena(int N) {
     char** arr = (char**)malloc(N * sizeof(char*));
     for (int i = 1; i < N; i++) arr[i] = "1";
     arr[0] = "2";
 
     char *multiple = "0";
+    char *two = "2";
 
     for (int i = 2; i < N; i += 3) {
-        multiple = add(multiple, "2");
+        multiple = add(multiple, two);
         arr[i] = multiple;
     }
 
     return arr;
 }
 
-int sumdigits(char n) {
+int sumdigits(char* n) {
     int sum = 0;
-    while (n != 0) {
-        sum += (n % 10);
-        n /= 10;
+    for (int i = 0; i < strlen(n); i++) {
+        sum += n[i] - '0';
     }
 
     return sum;
@@ -97,9 +126,9 @@ int main() {
     char *pa = "1", *pb = a[0], *pc;
 
     for (int i = 1; i < N; i++) {
-        pc = add(a[i] * pb + pa;
+        pc = add(mul(a[i], pb), pa);
         pa = pb; pb = pc;
-        printf("%llu ", pc);
+        printf("%s ", pc);
     }
     printf("%d\n", sumdigits(pc));
 
