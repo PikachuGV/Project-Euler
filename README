@@ -123,3 +123,71 @@ int ndigits(int n) {
 
     exit(1000);
 }
+
+Adding big numbers via strings:
+//Assume a is biggest
+char *add(char *a, char *b) {
+    if (strlen(a) > strlen(b)) {
+        char *temp = malloc((strlen(b) + 1) * sizeof(char)); strcpy(temp, b);
+        char *zeros = calloc(strlen(a) - strlen(b) + 1, sizeof(char));
+        memset(zeros, '0', (strlen(a) - strlen(b)) * sizeof(char));
+        b = calloc(strlen(a) + 1, sizeof(char));
+        strcat(b, zeros); strcat(b, temp);
+        free(temp);
+        free(zeros); 
+    }
+    int len = strlen(a);
+    int digit = 0, carry = 0;
+    
+    char *c = calloc((len + 2), sizeof(char));
+    
+    for (int i = len - 1; i >= 0; i--) {
+        digit = ((a)[i] - '0') + ((b)[i] - '0') + carry;
+        carry = digit / 10;
+        /* if (carry > 9 || carry < 0) {
+            ("%s, %s, %d", (a), (b), carry);
+            exit(100);
+        } */
+        c[i + 1] = (digit % 10) + '0';
+    }
+
+    if (carry == 0) {
+        char *C = calloc((len + 1), sizeof(char));
+        memcpy(C, c + 1, len * sizeof(char));
+        free(c);
+        return C;
+    }
+    c[0] = carry + '0';
+    return c;
+}
+
+Multiplying big numbers via strings:
+//Assume a is biggest.
+char *mul(char *a, char *b) {
+    int lena = strlen(a), lenb = strlen(b);
+    int digit = 0, carry = 0, product = 0;
+
+    char *A = calloc(lena + lenb + 1, sizeof(char)), *B = calloc(lena + lenb + 1, sizeof(char)), *C;
+    memset(A, '0', (lena + lenb) * sizeof(char)); memset(B, '0', (lena + lenb) * sizeof(char));
+
+    for (int i = lenb - 1; i >= 0; i--) {
+        digit = (int)(b[i] - '0'); carry = 0;
+        for (int j = lena - 1; j >= 0; j--) {
+            product = (int)(a[j] - '0') * digit + carry;
+            B[i + j + 1] = (product % 10) + '0';
+            carry = (product / 10);
+        }
+        B[i] = carry + '0';
+        C = add(A, B);
+        free(A); A = calloc(strlen(C) + 1, sizeof(char)); memcpy(A, C, strlen(C) * sizeof(char));
+        free(B); B = calloc(lena + lenb + 1, sizeof(char)); memset(B, '0', (lena + lenb) * sizeof(char));
+        free(C);
+    }
+    if (A[0] == '0') {
+        char *new = calloc(lena + lenb, sizeof(char));
+        memcpy(new, A + 1, (lena + lenb) * sizeof(char));
+        free(A);
+        return new;
+    }
+    return A;
+}
