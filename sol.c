@@ -80,39 +80,6 @@ int sieve(int start, int end, int **allprimes) {
     return c;
 }
 
-int* primeFactor(int *allprimes, int c, int n, int *npfactors) {
-    int p, *primes = malloc(0), len = 0;
-    for (int i = 0; i < c; i++) {
-        p = allprimes[i];
-        if ((n % p) == 0) {
-            len++; primes = realloc(primes, len * sizeof(int));
-            primes[len - 1] = p;
-
-            while ((n % p) == 0) n/=p;
-        }
-    }
-
-    *npfactors = len;
-    return primes;
-}
-
-int totient(int n) {
-    int nMultiples = 0, nPMultiples = 0, N = n, p;
-    bool numbers[n + 1]; memset(numbers, true, sizeof(numbers));
-    numbers[0] = false;
-    for (int i = 0; i < c; i++) {
-        p = primes[i];
-        if ((n % p) == 0) {
-            N /= p;
-            N *= (p - 1);
-            while ((n % p) == 0) n/=p;
-        }
-    }
-    return n;
-}
-
-
-
 int main() {
     double start = get_time();
     int p, *t, maxn; double maxv,v;
