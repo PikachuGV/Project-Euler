@@ -30,9 +30,10 @@ bool search(int* arr, int n, int len) {
 Sieve with start and end bounds (inclusive):
 
 int sieve(int start, int end, int **allprimes) {
-    bool primes[end - start + 1];
+    int size = end - start + 1;
+    bool *primes = malloc(size * sizeof(bool));
     int c = end - start + 1, s;
-    memset(primes, true, sizeof(primes));
+    memset(primes, true, sizeof(bool) * size);
 
     //i represents the multiple that we are sieving out now. We only need to sieve until i = sqrt(end) since any number above sqrt(end) is either a prime or a multiple of some number below sqrt(end).
     for (int i = 2; i * i <= end; i++) {
@@ -59,7 +60,7 @@ int sieve(int start, int end, int **allprimes) {
             (*allprimes)[index] = i; index++;
         }
     }
-
+    free(primes);
     return c;
 }
 
