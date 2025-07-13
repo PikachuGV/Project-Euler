@@ -1,13 +1,11 @@
 /*
-In the 5 by 5 matrix below, the minimal path sum from the top left to the bottom right, by only moving to the right and down, is indicated in bold red and is equal to 2427.
-
+The minimal path sum in the 5 by 5 matrix below, by starting in any cell in the left column and finishing in any cell in the right column, and only moving up, down, and right, is indicated in red and bold; the sum is equal to 994.
 
 131 673 234 103 18
 201 96  342 965 150
 630 803 746 422 111
 537 699 497 121 956
 805 732 524 37  331
-
 
 Find the minimal path sum from the top left to the bottom right by only moving right and down in matrix.txt, a 31K text file containing an 80 by 80 matrix.
 */
@@ -19,34 +17,93 @@ Find the minimal path sum from the top left to the bottom right by only moving r
 
 #define min(a,b) ((a < b) ? a : b)
 
-int matrix[80][80]; int minsum[80][80] = {0};
+typedef enum {
+    UP,
+    DOWN,
+    NONE
+} VDIR;
 
-int search(int i, int j) {
-    if (i == 79 && j == 79) return matrix[i][j];
-    if (minsum[i][j] != 0) return minsum[i][j];
+typedef struct node {    
+    int val;
+    int minvalup, minvaldown, minvalright;
+} NODE;
 
+
+#define N 80
+NODE *matrix[N][N];
+
+
+int search(int i, int j, VDIR vdir) {
+    NODE *n = matrix[i][j];
     int eval = INT_MAX;
-    if (i < 79) eval = min(eval,search(i+1, j));
-    if (j < 79) eval = min(eval,search(i, j+1));
 
-    minsum[i][j] = eval + matrix[i][j];
+    if (j == N-1) {
+        return n->val;
+    }
 
-    return minsum[i][j];
+    if (vdir != DOWN && n->minvalup != INT_MAX && n->minvalright != INT_MAX) {
+        //n->minvalup = min(search(i-1,j,UP) + n->val, n->minvalup);
+        eval = min(n->minvalup,eval);
+        eval = min(eval,n->minvalright);
+        if (vdir == NONE && n->minvaldown != INT_MAX && i < N-1) {
+            eval = min(eval,n->minvaldown);
+            return eval;
+        } else if (vdir != NONE) return eval;
+    }
+
+    if (vdir != UP && n->minvaldown != INT_MAX && n->minvalright != INT_MAX) {
+        //n->minvaldown = min(search(i+1,j,DOWN) + n->val, n->minvaldown);
+        eval = min(n->minvaldown,eval);
+        eval = min(eval,n->minvalright);
+        if (vdir == NONE && n->minvalup != INT_MAX && i > 0) {
+            eval = min(eval,n->minvalup);
+            return eval;
+        } else if (vdir != NONE) return eval;
+    }
+
+    if (n->minvalright == INT_MAX && j < N-1) n->minvalright = search(i,j+1,NONE) + n->val;
+    if (n->minvaldown == INT_MAX && i < N-1 && vdir != UP) n->minvaldown = search(i+1,j,DOWN) + n->val;
+    if (n->minvalup == INT_MAX && i > 0 && vdir != DOWN) n->minvalup = search(i-1,j,UP) + n->val;
+
+    if (vdir == UP) {
+        eval = min(n->minvalright, n->minvalup);
+    } else if (vdir == DOWN) {
+        eval = min(n->minvaldown, n->minvalright);
+    } else {
+        eval = min(n->minvaldown, min(n->minvalright, n->minvalup));
+    }
+
+    return eval;
 }
 
 
 int main() {
     FILE *f = fopen("matrix.txt", "r");
     char buffer[1023], *token;
-    for (int i = 0; i < 80; i++) {
+    NODE *n;
+
+    for (int i = 0; i < N; i++) for (int j = 0; j < N; j++) matrix[i][j] = malloc(sizeof(NODE));
+    for (int i = 0; i < N; i++) {
         fgets(buffer, 1023, f);
         token = strtok(buffer, ",");
-        for (int j = 0; j < 80; j++) {
-            matrix[i][j] = atoi(token);
+        for (int j = 0; j < N; j++) {
+            n = matrix[i][j];
+            n->val = atoi(token);
+            n->minvalup = INT_MAX;
+            n->minvaldown = INT_MAX;
+            n->minvalright = INT_MAX;
             token = strtok(NULL, ",");
         }
     }
 
-    printf("%d\n", search(0,0));
+    int eval = INT_MAX;
+    search(0,0,NONE);
+    
+    for (int i = 0; i < N; i++) {
+        eval = min(eval, matrix[i][0]->minvalright);
+    }
+
+    printf("%d", eval);
+
     return 0;
 }
