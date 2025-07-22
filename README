@@ -55,7 +55,7 @@ int sieve(int start, int end, int **allprimes) {
     *allprimes = (int*)malloc(c * sizeof(int));
 
     int index = 0;
-    for (int i = start; i < end; i++) {
+    for (int i = start; i <= end; i++) {
         if (primes[i - start]) {
             (*allprimes)[index] = i; index++;
         }
