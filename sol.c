@@ -23,10 +23,16 @@ Solutions are x(n+1) = 3xn + 4yn, y(n+1) = 2xn + 3yn, x1=y1=1
 
 We can calculate that xn ~ 1/2 (1+sqrt2)(3+2sqrt2)^(n-1) and y ~ 1/4 (2+sqrt2)(3+2sqrt2)^(n-1) for large n by expressing the system of reccurence relation as a matrix equation and solving for closed form. (The reason for the approximation is due to a (3-2sqrt2)^(n-1) in both terms. Since 3-2sqrt2 ~ 0.17, for large n it tends to 0.)
 
-So 2T-1 = 1/2 (1+sqrt2)(3+2sqrt2)^(n-1) and T > 10^12 
-Thus we have n > ((ln(10^12 - 2) - ln(1+sqrt2)) / ln(3+2sqrt2)) + 1 ~ 16.17
+So 2T-1 = 1/2 (1+sqrt2)(3+2sqrt2)^(n-1) and T > 10^12.
+Notice (1+sqrt2)^2 = (3+2sqrt2), so we actually have 2T-1 = 1/2 (1+sqrt2)^(2n-1)
 
-Hence try n=17. We get x=2140758220993 and y=1513744654945
+Thus we have (1+sqrt2)^(2n-1) > 2(10^12) -> 2n-1 > (ln2 + ln(10^12 - 1)) / ln(1+sqrt2) 
+
+Hence n > ((ln2 + ln(10^12 - 1))/2ln(1+sqrt2)) + 1/2 ~ 16.6
+
+Hence try n=17.
+We only need find y at n=17, which gives 1513744654945
+
 Thus we havae B = 0.5(1+1513744654945) = 756872327473
 */
 
